@@ -35,24 +35,23 @@ export default class PerlinCircle {
 
   }
 
+  getState(_obj){
+    return this.state[_obj]
+  }
+
   move(){
     this.state.perlin.zOffMove()
     this.state.rotation+=this.state.rotationInc;
-    // console.log(this.state.perlin.z)
-  }
-  draw(_circleParam, _position){
     /**
      * size - min !0 number, max number
      * roundness = min 0(), max 100(perfectly round)
      * smoothness = min, max..
      */
-    this.move()
-    let {size, roundness, smoothnessA, smoothnessB, position, quality, rotation} = this.state;
+    const {size, roundness, smoothnessB, quality, rotation} = this.state;
+    const smoothnessA = map(this.state.smoothnessA,0,100,5,0)
     const zoff = this.state.perlin.z;
-    let a = size;
+    let a = size; //Diameter for wide and short side of ellipse
     let b = size*(roundness/100);
-
-    smoothnessA = map(smoothnessA,0,100,5,0)
 
     this.state.vertexArr = []
     for (let angle = 0; angle<TWO_PI; angle+=TWO_PI/quality) {
@@ -66,14 +65,28 @@ export default class PerlinCircle {
       let y = this.r*sin(angle)+1;
       this.state.vertexArr.push({x:x, y:y})
     }
-
+  }
+  draw(_position){
+    // _position = _position ? _position : {}
+    const position = _position ? _position : this.state.position;
+    // console.log(_position)
+    const vertexArr = this.state.vertexArr;
     push();
       translate(position.x, position.y);
       beginShape();
-      this.state.vertexArr.forEach((pos) => {
+      vertexArr.forEach((pos) => {
         vertex(pos.x,pos.y)  
       })     
      endShape(CLOSE);
     pop();
+  }
+
+  drawSeamless(){
+    const position = {...this.state.position}
+    this.draw();
+    this.draw({x: position.x-width, y: position.y});
+    this.draw({x: position.x+width, y: position.y});
+    this.draw({x: position.x, y: position.y-height});
+    this.draw({x: position.x, y: position.y+height});
   }
 }
