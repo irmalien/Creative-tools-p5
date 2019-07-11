@@ -3,66 +3,78 @@ export default class Perlin {
   constructor(_obj){
     //ADD README HOW TO PASS ARGUMENTS
 
-    // If construcor arg obj is missing, assign empty obj
-    if(_obj===undefined){_obj={}}
-    
-    // Set initial OFFSET values from constructor obj or random number
-    this.xOffInit = _obj.xOff ? _obj.xOff : ((Math.random()*100)+1)
-    this.yOffInit = _obj.yOff ? _obj.yOff : ((Math.random()*100)+1)
-    this.zOffInit = _obj.zOff ? _obj.zOff : ((Math.random()*100)+1)
-    
-    // Set initial INCREMENT values from constructor obj or default number 
-    this.xInc = _obj.xInc ? _obj.xInc : 0.005
-    this.yInc = _obj.yInc ? _obj.yInc : 0.005
-    this.zInc = _obj.zInc ? _obj.zInc : 0.002
+    this.state = {
+      xOff: (Math.random()*100)+1,
+      yOff: (Math.random()*100)+1,
+      zOff: (Math.random()*100)+1,
+      
+      // Set initial INCREMENT values from constructor obj or default number 
+      xInc: 0.005,
+      yInc: 0.005,
+      zInc: 0.002,
+    }
 
-    // Set working OFFSET values from initial offset value
-    this.xOffReset()
-    this.yOffReset()
-    this.zOffReset()
+    this.setState(_obj)
   }
 
-  // Set perlin offset increment values
-  set xIncrement(_int){
-    this.xInc = _int;
-  }
-  set yIncrement(_int){
-    this.yInc = _int;
-  }
-  set zIncrement(_int){
-    this.zInc = _int;
+  setState(_obj, state = this.state) {
+    if (!_obj) return;
+    try {
+      Object.keys(_obj).forEach(key => {
+        if (typeof state[key] === 'object' && !Array.isArray(state[key])) {
+          this.setState(_obj[key], state[key]);
+          return;
+        }
+        state[key] = _obj[key];
+      })
+    }
+    catch(error) {
+      console.error(error);
+    }
+
   }
 
   get x(){
-    return this.xOff;
+    return this.state.xOff;
   }
   get y(){
-    return this.yOff;
+    return this.state.yOff;
   }
   get z(){
-    return this.zOff;
+    return this.state.zOff;
+  }
+
+  set xInc(_int){
+    this.state.xInc = _int;
+  }
+  set yInc(_int){
+    this.state.yInc = _int;
+  }
+  set zInc(_int){
+    this.state.zInc = _int;
+  }
+
+  set xOff(_int){
+    this.state.xOff += _int
+  }
+
+  set yOff(_int){
+    this.state.yOff += _int
+  }
+
+  set zOff(_int){
+    this.state.zOff += _int
   }
 
   // Move perlin offset values
   xOffMove(){
-    this.xOff += this.xInc;
+    this.state.xOff += this.state.xInc;
   }
   yOffMove(){
-    this.yOff += this.yInc;
+    this.state.yOff += this.state.yInc;
   }
-  zOffMove(){
-    this.zOff += this.zInc;
+  zOffMove(_int){
+    this.state.zOff += this.state.zInc; 
   }
 
-  // Reset perlin offset parameters to initial values
-  xOffReset(){
-    this.xOff = this.xOffInit;
-  };
-  yOffReset(){
-    this.yOff = this.yOffInit;
-    // console.log("reset")
-  };
-  zOffReset(){
-    this.zOff = this.zOffInit;
-  };
 }

@@ -10,6 +10,9 @@ export default class PerlinCircle {
     smoothnessB: 50,
     position: {x:0, y:0},
     perlin: new Perlin({zInc: 0.002}),
+    set perlinZOff(_int) {
+      this.perlin.zOff = _int
+    },
     quality: 500, //number of vertices that make object
     rotation: 0,
     rotationInc: 0.0005, //aka rotation speed; positive int - clockwise, negative - counterclockwise, 0.0005
