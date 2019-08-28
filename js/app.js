@@ -51,22 +51,35 @@ function draw() {
   })
 
   console.log(poissonDisk.getState('minimumDistance'))
-  
 
-  let poissonGrid = poissonDisk.drawGridArr();
-  poissonGrid.forEach(sample=>{
-    const r1 = random(5,15)
-    const perlinCircle = new PerlinCircle({
-      size: r1,
-      roundness: 100,
-      smoothnessA: random(80, 100),
-      position: {x: sample.x, y: sample.y}
-    })
-    perlinCircle.move();
-    noStroke();
-    fill(0,0,100);
-    perlinCircle.drawSeamless();
-  });
+
+  // let poissonGrid = poissonDisk.drawGridArr();
+  // poissonGrid.forEach(sample=>{
+  //   const r1 = random(5,15)
+  //   const perlinCircle = new PerlinCircle({
+  //     size: r1,
+  //     roundness: 100,
+  //     smoothnessA: random(80, 100),
+  //     position: {x: sample.x, y: sample.y}
+  //   })
+  //   perlinCircle.move();
+  //   noStroke();
+  //   fill(0,0,100);
+  //   perlinCircle.drawSeamless();
+  // });
+
+  const perlinCircle = new PerlinCircle({
+    size: 500,
+    roundness: 100,
+    smoothnessA: 70,
+    smoothnessB: 20,
+    position: {x:width/2, y:height/2},
+    quality: 500,
+  })
+  perlinCircle.move();
+  noStroke();
+  fill(0,0,100);
+  perlinCircle.drawSeamless();
 
 
   // Draw nonOverlappingCircles

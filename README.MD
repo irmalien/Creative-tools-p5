@@ -41,15 +41,20 @@ let size = perlinCircle.getState('size')
 A circle like object modified by Perlin noise.
 
 #### Example output and code below
-![Perlin Circle](./img/fast-poisson-disk-sample.png?raw=true)
+![Perlin Circle](./img/perlin_circle.png?raw=true)
 
 ```javascript
 const perlinCircle = new PerlinCircle({
-  size: 200,
-  roundness: 100,
-  smoothnessA: random(100),
-  position: {x: random(width), y: random(height)}
+  size: 500,          // size of circle
+  roundness: 100,     // roundness value from 100 round to 0 flat
+  smoothnessA: 60,    // smoothness on form value from 100 (smooth) to 0 rough
+  smoothnessB: 30,    // smoothness on details value from 100 (smooth) to 0 rough
+  position: {x:width/2, y:height/2},
+  quality: 500,       // number of vertices to create circle
 })
+perlinCircle.move();
+perlinCircle.draw();  
+// perlinCircle.drawSeamless() method to draw object on edges of canvas
 ```
 
 ## Fast Poisson Disk Sample
