@@ -1,37 +1,20 @@
-export default class Perlin {
-  //TODO ADD README HOW TO USE CLASS
+import CreativeTools from './creative_tools.js'
+
+export default class Perlin extends CreativeTools {
   constructor(_obj){
-    //ADD README HOW TO PASS ARGUMENTS
+		super();
 
     this.state = {
       xOff: (Math.random()*100)+1,
       yOff: (Math.random()*100)+1,
       zOff: (Math.random()*100)+1,
-      
-      // Set initial INCREMENT values from constructor obj or default number 
+
       xInc: 0.005,
       yInc: 0.005,
       zInc: 0.002,
     }
 
     this.setState(_obj)
-  }
-
-  setState(_obj, state = this.state) {
-    if (!_obj) return;
-    try {
-      Object.keys(_obj).forEach(key => {
-        if (typeof state[key] === 'object' && !Array.isArray(state[key])) {
-          this.setState(_obj[key], state[key]);
-          return;
-        }
-        state[key] = _obj[key];
-      })
-    }
-    catch(error) {
-      console.error(error);
-    }
-
   }
 
   get x(){
@@ -74,7 +57,7 @@ export default class Perlin {
     this.state.yOff += this.state.yInc;
   }
   zOffMove(_int){
-    this.state.zOff += this.state.zInc; 
+    this.state.zOff += this.state.zInc;
   }
 
 }

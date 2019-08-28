@@ -32,7 +32,27 @@ perlinCircle.setState({
 })
 ```
 
-### Fast Poisson Disk Sample
+#### get parameters with getState() method
+```javascript
+let size = perlinCircle.getState('size')
+```
+
+## Perlin Circle
+A circle like object modified by Perlin noise.
+
+#### Example output and code below
+![Perlin Circle](./img/fast-poisson-disk-sample.png?raw=true)
+
+```javascript
+const perlinCircle = new PerlinCircle({
+  size: 200,
+  roundness: 100,
+  smoothnessA: random(100),
+  position: {x: random(width), y: random(height)}
+})
+```
+
+## Fast Poisson Disk Sample
 Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern.
 
 #### Example output and code below

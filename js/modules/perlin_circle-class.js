@@ -1,45 +1,26 @@
 import Perlin from './perlin-class.js'
+import CreativeTools from './creative_tools.js'
 
-export default class PerlinCircle {
+export default class PerlinCircle  extends CreativeTools {
 	constructor(_obj){
+		super();
 
-  this.state = {
-    size: 100,
-    roundness: 50,
-    smoothnessA: 50,
-    smoothnessB: 50,
-    position: {x:0, y:0},
-    perlin: new Perlin({zInc: 0.002}),
-    set perlinZOff(_int) {
-      this.perlin.zOff = _int
-    },
-    quality: 500, //number of vertices that make object
-    rotation: 0,
-    rotationInc: 0.0005, //aka rotation speed; positive int - clockwise, negative - counterclockwise, 0.0005
-    vertexArr: []
-  }
-  this.setState(_obj)
-  }
-
-  setState(_obj, state = this.state) {
-    if (!_obj) return;
-    try {
-      Object.keys(_obj).forEach(key => {
-        if (typeof state[key] === 'object' && !Array.isArray(state[key])) {
-          this.setState(_obj[key], state[key]);
-          return;
-        }
-        state[key] = _obj[key];
-      })
-    }
-    catch(error) {
-      console.error(error);
-    }
-
-  }
-
-  getState(_obj){
-    return this.state[_obj]
+	  this.state = {
+	    size: 100,
+	    roundness: 50,
+	    smoothnessA: 50,
+	    smoothnessB: 50,
+	    position: {x:0, y:0},
+	    perlin: new Perlin({zInc: 0.002}),
+	    set perlinZOff(_int) {
+	      this.perlin.zOff = _int
+	    },
+	    quality: 500, //number of vertices that make object
+	    rotation: 0,
+	    rotationInc: 0.0005, //aka rotation speed; positive int - clockwise, negative - counterclockwise, 0.0005
+	    vertexArr: []
+	  }
+	  this.setState(_obj)
   }
 
   move(){
@@ -78,8 +59,8 @@ export default class PerlinCircle {
       translate(position.x, position.y);
       beginShape();
       vertexArr.forEach((pos) => {
-        vertex(pos.x,pos.y)  
-      })     
+        vertex(pos.x,pos.y)
+      })
      endShape(CLOSE);
     pop();
   }

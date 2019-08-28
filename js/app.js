@@ -51,6 +51,7 @@ function draw() {
   })
 
   console.log(poissonDisk.getState('minimumDistance'))
+  
 
   let poissonGrid = poissonDisk.drawGridArr();
   poissonGrid.forEach(sample=>{

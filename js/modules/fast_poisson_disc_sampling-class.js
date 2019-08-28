@@ -3,6 +3,7 @@ import CreativeTools from './creative_tools.js'
 export default class FastPoissonDiskSampling extends CreativeTools {
 	constructor(_obj){
 		super();
+		
 	  this.state = {
 	    width: width,
 	    height: height,
