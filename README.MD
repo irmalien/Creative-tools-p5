@@ -12,6 +12,7 @@ TODO: Describe the installation process
 All tools are made as classes with state and can be initialised as objects with individualised settings.
 Settings to objects can be passed upon initialisation or anytime after using objects .setState() function.
 
+#### Initialise object parameters with constructor
 ```javascript
 const perlinCircle = new PerlinCircle({
   size: random(10,20),
@@ -20,8 +21,8 @@ const perlinCircle = new PerlinCircle({
   position: {x: random(width), y: random(height)}
 })
 ```
-_initialise setting with constructor_
 
+#### Initialise object parameters with setState() method
 ```javascript
 perlinCircle.setState({
   size: random(10,20),
@@ -30,12 +31,12 @@ perlinCircle.setState({
   position: {x: random(width), y: random(height)}
 })
 ```
-_initialise settings with setState() method_
 
 ### Fast Poisson Disk Sample
 Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern.
 
-![Example output from parameters below](./img/fast-poisson-disk-sample.png?raw=true)
+#### Example output and code below
+![Fast Poisson Disk Sample](./img/fast-poisson-disk-sample.png?raw=true)
 
 ```javascript
 const fastPoissonDiscSampling = new FastPoissonDiskSampling({
@@ -45,9 +46,6 @@ minimumDistance: 50,  // required minimum distance between the points
 numberOfSamples: 30,  // Number of new samples around one sample
 })
 ```
-_example output editable parameters_
-
-
 
 ## Usage
 TODO: Write usage instructions
