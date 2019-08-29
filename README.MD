@@ -52,8 +52,8 @@ const perlinCircle = new PerlinCircle({
   position: {x:width/2, y:height/2},
   quality: 500,       // number of vertices to create circle
 })
-perlinCircle.move();
-perlinCircle.draw();  
+perlinCircle.move();  // move may be used to animate object by executing method on each frame
+perlinCircle.draw();  // draws object on canvas
 // perlinCircle.drawSeamless() method to draw object on edges of canvas
 ```
 
@@ -72,9 +72,6 @@ numberOfSamples: 30,  // Number of new samples around one sample
 })
 ```
 
-## Usage
-TODO: Write usage instructions
-
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -85,6 +82,7 @@ TODO: Write usage instructions
 
 ## Credits
 [Fast Poisson Disk Sampling in Arbitrary Dimensions](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
+[Perlin noise wiki](https://en.wikipedia.org/wiki/Perlin_noise)
 
 ## License
 TODO: Write license
