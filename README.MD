@@ -54,7 +54,7 @@ const perlinCircle = new PerlinCircle({
 })
 perlinCircle.move();
 perlinCircle.draw();  
-// perlinCircle.drawSeamless() method to draw object on edges of canvas
+// perlinCircle.drawSeamless() method to draw circle on edge and continue on opposite side.
 ```
 
 ## Fast Poisson Disk Sample
@@ -70,6 +70,7 @@ height: height,       // height of area
 minimumDistance: 50,  // required minimum distance between the points
 numberOfSamples: 30,  // Number of new samples around one sample
 })
+fastPoissonDiscSampling.drawGridArr(); // export x and y positions in array
 ```
 
 ## Usage
