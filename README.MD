@@ -52,13 +52,19 @@ const perlinCircle = new PerlinCircle({
   position: {x:width/2, y:height/2},
   quality: 500,       // number of vertices to create circle
 })
+<<<<<<< HEAD
 perlinCircle.move();
 perlinCircle.draw();  
 // perlinCircle.drawSeamless() method to draw circle on edge and continue on opposite side.
+=======
+perlinCircle.move();  // move may be used to animate object by executing method on each frame
+perlinCircle.draw();  // draws object on canvas
+// perlinCircle.drawSeamless() method to draw object on edges of canvas
+>>>>>>> ca674e32d0d9e5dc07ac251bf0f3594ccc825a41
 ```
 
 ## Fast Poisson Disk Sample
-Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern.
+Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern. Advantage of this algorithm is it's fast speed. While disadvantage is that it works best with circles/forms that are similar size, and as size variation increases algorithm produces less than satisfactory results.
 
 #### Example output and code below
 ![Fast Poisson Disk Sample](./img/fast-poisson-disk-sample.png?raw=true)
@@ -73,9 +79,6 @@ numberOfSamples: 30,  // Number of new samples around one sample
 fastPoissonDiscSampling.drawGridArr(); // export x and y positions in array
 ```
 
-## Usage
-TODO: Write usage instructions
-
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -86,6 +89,7 @@ TODO: Write usage instructions
 
 ## Credits
 [Fast Poisson Disk Sampling in Arbitrary Dimensions](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
+[Perlin noise wiki](https://en.wikipedia.org/wiki/Perlin_noise)
 
 ## License
 TODO: Write license
