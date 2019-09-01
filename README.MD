@@ -52,15 +52,9 @@ const perlinCircle = new PerlinCircle({
   position: {x:width/2, y:height/2},
   quality: 500,       // number of vertices to create circle
 })
-<<<<<<< HEAD
 perlinCircle.move();
 perlinCircle.draw();  
 // perlinCircle.drawSeamless() method to draw circle on edge and continue on opposite side.
-=======
-perlinCircle.move();  // move may be used to animate object by executing method on each frame
-perlinCircle.draw();  // draws object on canvas
-// perlinCircle.drawSeamless() method to draw object on edges of canvas
->>>>>>> ca674e32d0d9e5dc07ac251bf0f3594ccc825a41
 ```
 
 ## Fast Poisson Disk Sample

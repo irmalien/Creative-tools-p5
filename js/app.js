@@ -157,23 +157,12 @@ function draw() {
     return circlesArr
   }
 
-  function jitterGridPositions (_obj) {
-  const {width, height, columns, rows } = _obj;
-  const collumnsWidth = width/columns
-  const rowsWidth = height/rows
-  const positionArr = [];
 
-  for(let i=0; i<rows; i++){
-    const y = i*rowsWidth;
-    for(let j=0; j<columns; j++){
-      const x = j*collumnsWidth;
-      positionArr.push({x: x, y: y })
-    }
-  }
-  return positionArr;
-  }
 
   function subRandomPositions (_obj) {
+    // Function splits area in seperated regions and fills with random points,
+    // creating more uniform distribution.
+
     //Imported variables
     const {quantity, columns, rows } = _obj;
     const areaWidth = _obj.width ? _obj.width : width;
