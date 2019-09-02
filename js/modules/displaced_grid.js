@@ -9,7 +9,7 @@ export default class DisplacedGrid extends CreativeTools {
       areaHeight: height,
       columns: 16,
       rows: 16,
-      displacementIntensity: 50, //0 none, 100 edge of row/collumn
+      displacementIntensity: 100, //0 none, 100 edge of row/collumn
       get columnWidth() {
         return floor(this.areaWidth / this.columns);
       },
@@ -46,19 +46,19 @@ export default class DisplacedGrid extends CreativeTools {
   }
 
   get positionsArray() {
-    return makeDisplacedGrid()
+    return this._makeDisplacedGrid();
   }
 
-  displace(position) {
+  _displace(position) {
     position.x += map(
-      this.randomizeValue(),
+      this._randomizeValue(),
       0,
       100,
       -this.state.maximumDisplacementInCollumn,
       this.state.maximumDisplacementInCollumn
     );
     position.y += map(
-      this.randomizeValue(),
+      this._randomizeValue(),
       0,
       100,
       -this.state.maximumDisplacementInCollumn,
@@ -67,11 +67,11 @@ export default class DisplacedGrid extends CreativeTools {
     return position;
   }
 
-  randomizeValue(min = 0, max = 100) {
+  _randomizeValue(min = 0, max = 100) {
     return random(min, max);
   }
 
-  makeGrid() {
+  _makeGrid() {
     const {
       rows,
       columns,
@@ -83,36 +83,20 @@ export default class DisplacedGrid extends CreativeTools {
     const positionsArr = [];
 
     for (let i = 0; i < rows; i++) {
-      const positionY = i * rowsWidth + rowHalfHeight;
+      const positionY = i * rowHeight + rowHalfHeight;
       for (let j = 0; j < columns; j++) {
-        const positionX = j * collumnsWidth + columnHalfWidth;
+        const positionX = j * columnWidth + columnHalfWidth;
         positionsArr.push({ x: positionX, y: positionY });
       }
     }
-
     return positionsArr;
   }
 
-  makeDisplacedGrid() {
-    return this.makeGrid().forEach(position => {
-      position = displace(position);
+  _makeDisplacedGrid() {
+    const positionsArr = []
+    this._makeGrid().forEach(position => {
+      positionsArr.push(this._displace(position));
     });
+    return positionsArr
   }
-
 }
-
-// jitterGridPositions(_obj) {
-//   const { width, height, columns, rows } = _obj;
-//   const collumnsWidth = width / columns;
-//   const rowsWidth = height / rows;
-//   const positionArr = [];
-//
-//   for (let i = 0; i < rows; i++) {
-//     const y = i * rowsWidth;
-//     for (let j = 0; j < columns; j++) {
-//       const x = j * collumnsWidth;
-//       positionArr.push({ x: x, y: y });
-//     }
-//   }
-//   return positionArr;
-// }

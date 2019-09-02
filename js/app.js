@@ -1,6 +1,7 @@
 import AutoSave from './modules/autosave-class.js'
 import PerlinCircle from './modules/perlin_circle-class.js'
 import FastPoissonDiskSampling from './modules/fast_poisson_disc_sampling-class.js'
+import DisplacedGrid from './modules/displaced_grid.js'
 
 let poissonDisk;
 
@@ -45,14 +46,31 @@ function draw() {
   // }
 
   // Draw FastPoissonDiskSamplingGrid
-  poissonDisk = new FastPoissonDiskSampling({
-    minimumDistance: 50,
-    numberOfSamples: 30
+  // poissonDisk = new FastPoissonDiskSampling({
+  //   minimumDistance: 50,
+  //   numberOfSamples: 30
+  // })
+
+  //*****************************************
+  // Draw DisplacedGrid
+  const displacedGrid = new DisplacedGrid({columns: 22, rows: 13, displacementIntensity: 100})
+  displacedGrid.positionsArray.forEach(sample=>{
+    const r1 = random(5,15)
+    const perlinCircle = new PerlinCircle({
+      size: r1,
+      roundness: 100,
+      smoothnessA: random(80, 100),
+      position: {x: sample.x, y: sample.y}
+    })
+    perlinCircle.move();
+    noStroke();
+    fill(0,0,100);
+    perlinCircle.drawSeamless();
   })
+  //*****************************************
 
-  console.log(poissonDisk.getState('minimumDistance'))
-
-
+  //*****************************************
+  // Draw poissonDisk positions
   // let poissonGrid = poissonDisk.drawGridArr();
   // poissonGrid.forEach(sample=>{
   //   const r1 = random(5,15)
@@ -67,20 +85,24 @@ function draw() {
   //   fill(0,0,100);
   //   perlinCircle.drawSeamless();
   // });
+  //*****************************************
 
-  const perlinCircle = new PerlinCircle({
-    size: 500,
-    roundness: 100,
-    smoothnessA: 70,
-    smoothnessB: 20,
-    position: {x:width/2, y:height/2},
-    quality: 500,
-  })
-  perlinCircle.move();
-  noStroke();
-  fill(0,0,100);
-  perlinCircle.drawSeamless();
 
+  //*****************************************
+  // Draw single PerlinCircle
+  // const perlinCircle = new PerlinCircle({
+  //   size: 500,
+  //   roundness: 100,
+  //   smoothnessA: 70,
+  //   smoothnessB: 20,
+  //   position: {x:width/2, y:height/2},
+  //   quality: 500,
+  // })
+  // perlinCircle.move();
+  // noStroke();
+  // fill(0,0,100);
+  // perlinCircle.drawSeamless();
+  //*****************************************
 
   // Draw nonOverlappingCircles
   // let nonOverlappingCircles = nonOverlappingPositions({
