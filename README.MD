@@ -57,6 +57,23 @@ perlinCircle.draw();
 // perlinCircle.drawSeamless() method to draw circle on edge and continue on opposite side.
 ```
 
+## Displaced grid
+Generates grid of positions and by adjusting `displacementIntensity` creates appearance of random distribution. Value `0` creates grid with where each point is placed in middle of each cell, `100` adds displacement up to edge of the cell, values above `100` displaces points below their cell.
+
+#### Example output and code below
+![Displacement grid](./img/displacement_grid.png?raw=true)
+
+```javascript
+const displacedGrid = new DisplacedGrid({
+  areaWidth: width,
+  areaHeight: height,
+  columns: 22,
+  rows: 13,
+  displacementIntensity: 100
+});
+displacedGrid.positionsArray; // export x and y positions in array
+```
+
 ## Fast Poisson Disk Sample
 Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern. Advantage of this algorithm is it's fast speed. While disadvantage is that it works best with circles/forms that are similar size, and as size variation increases algorithm produces less than satisfactory results.
 
