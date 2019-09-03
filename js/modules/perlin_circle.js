@@ -1,4 +1,4 @@
-import Perlin from './perlin-class.js'
+import Perlin from './perlin.js'
 import CreativeTools from './creative_tools.js'
 
 export default class PerlinCircle  extends CreativeTools {

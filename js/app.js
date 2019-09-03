@@ -1,19 +1,15 @@
-import AutoSave from './modules/autosave-class.js'
-import PerlinCircle from './modules/perlin_circle-class.js'
-import FastPoissonDiskSampling from './modules/fast_poisson_disc_sampling-class.js'
-import DisplacedGrid from './modules/displaced_grid.js'
+import PerlinCircle from "./modules/perlin_circle.js";
+import FastPoissonDiskSampling from "./modules/fast_poisson_disc_sampling.js";
+import DisplacedGrid from "./modules/displaced_grid.js";
+import SubRandom from "./modules/sub_random_positions.js";
 
 let poissonDisk;
 
-/////////
-const autoSave = new AutoSave(2);
-
 function setup() {
-  if(window.innerWidth<800){
+  if (window.innerWidth < 800) {
     scene.canvasWidth = window.innerWidth;
     scene.canvasHeight = window.innerHeight;
-  }
-  else {
+  } else {
     scene.canvasWidth = 2200;
     scene.canvasHeight = 1308;
   }
@@ -22,15 +18,14 @@ function setup() {
   scene.canvas.class("canvasClass");
   scene.canvas.id("canvasId");
   scene.wrapCanvas("canvasId");
-  colorMode(HSL, 360,100,100);
+  colorMode(HSL, 360, 100, 100);
 
   scene.fitCanvasToScreen();
-  window.addEventListener('resize', scene.fitCanvasToScreen, false);
-
+  window.addEventListener("resize", scene.fitCanvasToScreen, false);
 }
 
 function draw() {
-  background(0)
+  background(0);
 
   // for(let i=0; i<2000; i++){
   //   const perlinCircle = new PerlinCircle({
@@ -53,21 +48,48 @@ function draw() {
 
   //*****************************************
   // Draw DisplacedGrid
-  const displacedGrid = new DisplacedGrid({columns: 22, rows: 13, displacementIntensity: 100})
-  displacedGrid.positionsArray.forEach(sample=>{
-    const r1 = random(5,15)
+  // const displacedGrid = new DisplacedGrid({
+  //   columns: 22,
+  //   rows: 13,
+  //   displacementIntensity: 100
+  // });
+  // displacedGrid.positionsArray.forEach(sample => {
+  //   const r1 = random(5, 15);
+  //   const perlinCircle = new PerlinCircle({
+  //     size: r1,
+  //     roundness: 100,
+  //     smoothnessA: random(80, 100),
+  //     position: { x: sample.x, y: sample.y }
+  //   });
+  //   perlinCircle.move();
+  //   noStroke();
+  //   fill(0, 0, 100);
+  //   perlinCircle.drawSeamless();
+  // });
+  //*****************************************
+
+  //*****************************************
+  // Draw SubRandom
+  const subRandom = new SubRandom({
+    columns: 50,
+    rows: 50,
+    quantityOfPositions: 100,
+  });
+  subRandom.positionsArray.forEach(sample => {
+    const r1 = random(2, 5);
     const perlinCircle = new PerlinCircle({
       size: r1,
       roundness: 100,
       smoothnessA: random(80, 100),
-      position: {x: sample.x, y: sample.y}
-    })
+      position: { x: sample.x, y: sample.y }
+    });
     perlinCircle.move();
     noStroke();
-    fill(0,0,100);
+    fill(0, 0, 100);
     perlinCircle.drawSeamless();
-  })
+  });
   //*****************************************
+
 
   //*****************************************
   // Draw poissonDisk positions
@@ -86,7 +108,6 @@ function draw() {
   //   perlinCircle.drawSeamless();
   // });
   //*****************************************
-
 
   //*****************************************
   // Draw single PerlinCircle
@@ -125,7 +146,6 @@ function draw() {
   //   perlinCircle.drawSeamless();
   // });
 
-
   // Draw jittered Grid
   // let circlesArr = makePositionGrid({
   //   width: width,
@@ -138,93 +158,41 @@ function draw() {
   //   return pos
   // });
 
-
-  noLoop()
+  noLoop();
   // saveCanvas()
 
-
-
-
   // FUNCTIONS
-  function nonOverlappingPositions(_obj){
-    const {quantity, minSize, maxSize, minMargin, maxMargin} = _obj;
+  function nonOverlappingPositions(_obj) {
+    const { quantity, minSize, maxSize, minMargin, maxMargin } = _obj;
     const positionsWidth = _obj.width ? _obj.width : width;
     const positionsHeight = _obj.height ? _obj.height : height;
     let attempts = 0;
     let circlesArr = [];
 
-    while(circlesArr.length < quantity && attempts < quantity*1000){
+    while (circlesArr.length < quantity && attempts < quantity * 1000) {
       attempts++;
       const circle = {
         x: random(positionsWidth),
         y: random(positionsHeight),
-        r: random(minSize,maxSize),
-        get margin(){
+        r: random(minSize, maxSize),
+        get margin() {
           return random(minMargin, maxMargin);
         }
-      }
+      };
       let overlapping = false;
-      for(let j =0; j<circlesArr.length; j++){
+      for (let j = 0; j < circlesArr.length; j++) {
         let other = circlesArr[j];
-        let distance = dist(circle.x, circle.y, other.x, other.y)
-        if(distance < circle.r + other.r + circle.margin) {
+        let distance = dist(circle.x, circle.y, other.x, other.y);
+        if (distance < circle.r + other.r + circle.margin) {
           overlapping = true;
           break;
         }
       }
-      if(!overlapping){
-        circlesArr.push(circle)
+      if (!overlapping) {
+        circlesArr.push(circle);
       }
     }
-    return circlesArr
-  }
-
-
-
-  function subRandomPositions (_obj) {
-    // Function splits area in seperated regions and fills with random points,
-    // creating more uniform distribution.
-
-    //Imported variables
-    const {quantity, columns, rows } = _obj;
-    const areaWidth = _obj.width ? _obj.width : width;
-    const areaHeight = _obj.height ? _obj.height : height;
-
-    //Generated variables
-    const quantityInRegion = Math.round(quantity/(columns*rows))
-    const regionWidth = areaWidth/columns
-    const regionHeight = areaHeight/rows
-    const regionsArr = [];
-    const positionsArr = [];
-
-    //Divide area and create separated regions
-    for(let i=0; i<rows; i++){
-      const regionY1 = i*regionHeight;
-      const regionY2 = (i+1)*regionHeight;
-
-      for(let j=0; j<columns; j++){
-        const regionX1 = j*regionWidth;
-        const regionX2 = (j+1)*regionWidth;
-        regionsArr.push({
-          x1: regionX1,
-          x2: regionX2,
-          y1: regionY1,
-          y2: regionY2,
-        })
-      }
-    }
-
-    //Populate each region with equal amount of random positions
-    for(let region in regionsArr){
-      for(let i=0; i<quantityInRegion; i++){
-        const x = random(regionsArr[region].x1, regionsArr[region].x2)
-        const y = random(regionsArr[region].y1, regionsArr[region].y2)
-        positionsArr.push({x: x, y: y })
-      }
-    }
-    return positionsArr;
-
-
+    return circlesArr;
   }
 
 }

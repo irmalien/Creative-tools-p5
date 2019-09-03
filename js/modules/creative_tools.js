@@ -1,4 +1,13 @@
+// import below does not work, remove if unresolved
+import seedrandom from './seedrandom.js';
+
 export default class CreativeTools {
+  constructor(_obj) {
+    this.state = {
+    }
+    //console.log(Math.seedrandom())
+  }
+
   setState(_obj, state = this.state) {
     if (!_obj) return;
     try {
@@ -18,5 +27,6 @@ export default class CreativeTools {
   getState(_obj){
     return this.state[_obj]
   }
-  
+
+
 }
