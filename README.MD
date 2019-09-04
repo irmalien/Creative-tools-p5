@@ -57,6 +57,21 @@ perlinCircle.draw();
 // perlinCircle.drawSeamless() method to draw circle on edge and continue on opposite side.
 ```
 
+## Sub-Random positions
+Splits area in cells and populates each cell with randomly distributed positions. Number of cells are determined by `collumns` and `rows` in object. As number of cells are increased, randomness non-uniformity effect gets reduced.
+
+#### Example output and code below
+![Sub-random positions](./img/sub-random.png?raw=true)
+
+```javascript
+const subRandom = new SubRandom({
+  columns: 50,
+  rows: 50,
+  quantityOfPositions: 100,
+});
+subRandom.positionsArray; // export x and y positions in array
+```
+
 ## Displaced grid
 Generates grid of positions and by adjusting `displacementIntensity` creates appearance of random distribution. Value `0` creates grid with where each point is placed in middle of each cell, `100` adds displacement up to edge of the cell, values above `100` displaces points below their cell.
 
@@ -105,5 +120,5 @@ fastPoissonDiscSampling.drawGridArr(); // export x and y positions in array
 ## License
 TODO: Write license
 
-### Dependencies
+## Dependencies
 This app is using [P5.js library](https://github.com/processing/p5.js)
