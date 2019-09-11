@@ -71,9 +71,9 @@ function draw() {
   //*****************************************
   // Draw SubRandom
   const subRandom = new SubRandom({
-    columns: 50,
-    rows: 50,
-    quantityOfPositions: 100,
+    columns: 100,
+    rows: 100,
+    quantityOfPositionsInCell: 1,
   });
   subRandom.positionsArray.forEach(sample => {
     const r1 = random(2, 5);

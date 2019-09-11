@@ -10,18 +10,16 @@ export default class DisplacedGrid extends CreativeTools {
     this.state = {
       areaWidth: width,
       areaHeight: height,
-      columns: 16,
-      rows: 16,
-      quantityOfPositions: 100,
+      columns: 1,
+      rows: 1,
+      quantityOfPositionsInCell: 10,
       get columnWidth() {
         return floor(this.areaWidth / this.columns);
       },
       get rowHeight() {
         return floor(this.areaHeight / this.rows);
       },
-      get quantityOfPositionsInRegion() {
-        return Math.ceil(this.quantityOfPositions / (this.columns * this.rows));
-      },
+
     };
 
     this.setState(_obj);
@@ -60,12 +58,12 @@ export default class DisplacedGrid extends CreativeTools {
   }
 
   _populateCellsWithPositions(){
-    const {quantityOfPositionsInRegion} = this.state
+    const {quantityOfPositionsInCell} = this.state
     const cellsArr = this._makeCells()
     const positionsArr = []
 
     for (let cell in cellsArr) {
-      for (let i = 0; i < quantityOfPositionsInRegion; i++) {
+      for (let i = 0; i < quantityOfPositionsInCell; i++) {
         const x = random(cellsArr[cell].x1, cellsArr[cell].x2);
         const y = random(cellsArr[cell].y1, cellsArr[cell].y2);
         positionsArr.push({ x: x, y: y });
