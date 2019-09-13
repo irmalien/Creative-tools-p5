@@ -2,6 +2,7 @@ import PerlinCircle from "./modules/perlin_circle.js";
 import FastPoissonDiskSampling from "./modules/fast_poisson_disc_sampling.js";
 import DisplacedGrid from "./modules/displaced_grid.js";
 import SubRandom from "./modules/sub_random_positions.js";
+import NonOverlappingPositions from "./modules/non_overlapping_positions.js"
 
 let poissonDisk;
 
@@ -70,24 +71,47 @@ function draw() {
 
   //*****************************************
   // Draw SubRandom
-  const subRandom = new SubRandom({
-    columns: 100,
-    rows: 100,
-    quantityOfPositionsInCell: 1,
-  });
-  subRandom.positionsArray.forEach(sample => {
-    const r1 = random(2, 5);
-    const perlinCircle = new PerlinCircle({
-      size: r1,
-      roundness: 100,
-      smoothnessA: random(80, 100),
-      position: { x: sample.x, y: sample.y }
+  // const subRandom = new SubRandom({
+  //   columns: 10,
+  //   rows: 10,
+  //   quantityOfPositionsInCell: 1,
+  // });
+  // subRandom.positionsArray.forEach(sample => {
+  //   const r1 = random(2, 5);
+  //   const perlinCircle = new PerlinCircle({
+  //     size: r1,
+  //     roundness: 100,
+  //     smoothnessA: random(80, 100),
+  //     position: { x: sample.x, y: sample.y }
+  //   });
+  //   perlinCircle.move();
+  //   noStroke();
+  //   fill(0, 0, 100);
+  //   perlinCircle.drawSeamless();
+  // });
+  //*****************************************
+
+  //*****************************************
+  // Draw NonOverlappingPositions
+    const nonOverlapping = new NonOverlappingPositions({
+      quantityOfPositions: 100,
+      minimumSize: 10,
+      maximumSize: 50,
+      minimumMargin: 0.1,
+      maximumMargin: 5,
     });
-    perlinCircle.move();
-    noStroke();
-    fill(0, 0, 100);
-    perlinCircle.drawSeamless();
-  });
+    nonOverlapping.positionsArray.forEach(sample => {
+      const perlinCircle = new PerlinCircle({
+        size: sample.r/2,
+        roundness: 100,
+        smoothnessA: random(80, 100),
+        position: { x: sample.x, y: sample.y }
+      });
+      perlinCircle.move();
+      noStroke();
+      fill(0, 0, 100);
+      perlinCircle.drawSeamless();
+    });
   //*****************************************
 
 
@@ -162,38 +186,7 @@ function draw() {
   // saveCanvas()
 
   // FUNCTIONS
-  function nonOverlappingPositions(_obj) {
-    const { quantity, minSize, maxSize, minMargin, maxMargin } = _obj;
-    const positionsWidth = _obj.width ? _obj.width : width;
-    const positionsHeight = _obj.height ? _obj.height : height;
-    let attempts = 0;
-    let circlesArr = [];
 
-    while (circlesArr.length < quantity && attempts < quantity * 1000) {
-      attempts++;
-      const circle = {
-        x: random(positionsWidth),
-        y: random(positionsHeight),
-        r: random(minSize, maxSize),
-        get margin() {
-          return random(minMargin, maxMargin);
-        }
-      };
-      let overlapping = false;
-      for (let j = 0; j < circlesArr.length; j++) {
-        let other = circlesArr[j];
-        let distance = dist(circle.x, circle.y, other.x, other.y);
-        if (distance < circle.r + other.r + circle.margin) {
-          overlapping = true;
-          break;
-        }
-      }
-      if (!overlapping) {
-        circlesArr.push(circle);
-      }
-    }
-    return circlesArr;
-  }
 
 }
 
