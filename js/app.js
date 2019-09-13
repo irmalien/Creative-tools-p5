@@ -94,10 +94,10 @@ function draw() {
   //*****************************************
   // Draw NonOverlappingPositions
     const nonOverlapping = new NonOverlappingPositions({
-      quantityOfPositions: 100,
-      minimumSize: 10,
-      maximumSize: 50,
-      minimumMargin: 0.1,
+      quantityOfPositions: 10000,
+      minimumSize: 2,
+      maximumSize: 2,
+      minimumMargin: 5,
       maximumMargin: 5,
     });
     nonOverlapping.positionsArray.forEach(sample => {
