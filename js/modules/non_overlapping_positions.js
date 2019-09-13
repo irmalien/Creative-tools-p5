@@ -1,4 +1,5 @@
 import CreativeTools from "./creative_tools.js";
+import { Point, Rectangle, QuadTree, Circle } from "./quadtree.js"
 
 export default class NonOverlappingPositions extends CreativeTools {
   constructor(_obj) {
@@ -14,7 +15,7 @@ export default class NonOverlappingPositions extends CreativeTools {
       maximumMargin: 50,
       isSeamless: false,
       get maximumAttemptsBeforeExit() {
-        return this.quantityOfPositions * 100;
+        return this.quantityOfPositions * 10;
       },
       get randomWidthPosition() {
         return random(this.areaWidth)
@@ -23,15 +24,19 @@ export default class NonOverlappingPositions extends CreativeTools {
         return random(this.areaHeight)
       },
       get randomSize() {
-        return this.minimumSize ? random(this.minimumSize, this.maximumSize) : this.maximumSize
+        return this.minimumSize != 0 ? random(this.minimumSize, this.maximumSize) : this.maximumSize
 
       },
       get randomMargin() {
-        return this.minimumMargin ? random(this.minimumMargin, this.maximumMargin) : this.maximumMargin
+        return this.minimumMargin != 0 ? random(this.minimumMargin, this.maximumMargin) : this.maximumMargin
       }
     };
 
     this.setState(_obj);
+
+    this.boundary = new Rectangle(0, 0, this.state.areaWidth, this.state.areaHeight);
+    this.capacity = 4;
+    this.quadtree = new QuadTree(this.boundary, this.capacity);
   }
 
   get positionsArray() {
@@ -42,20 +47,49 @@ export default class NonOverlappingPositions extends CreativeTools {
     const { quantityOfPositions, maximumAttemptsBeforeExit } = this.state;
 
     const positionsArr = [];
+    let positionsQuadArr = [];
     let failedAttempts = 0;
     while (
       positionsArr.length < quantityOfPositions &&
       failedAttempts < maximumAttemptsBeforeExit
     ) {
       failedAttempts++;
-      const positionCandidate = this._makeRandomPosition();
-      const positionIsValid = this._candidatePositionIsValid(
-        positionCandidate,
-        positionsArr
-      );
 
-      if (positionIsValid) {
-        positionsArr.push(positionCandidate);
+      if (positionsArr.length === 0) {
+        const positionCandidate = this._makeRandomPosition();
+        const point = new Point (
+          positionCandidate.x,
+          positionCandidate.y,
+          positionCandidate
+        )
+        this.quadtree.insert(point)
+        positionsArr.push(positionCandidate)
+      }
+
+      const positionCandidate = this._makeRandomPosition();
+      const range = new Circle (
+        positionCandidate.x,
+        positionCandidate.y,
+        (positionCandidate.r+positionCandidate.margin)*2,
+      )
+
+      let points = this.quadtree.query(range)
+      let intersects = false
+      for (let i =0; i<points.length; i++) {
+        let other = points[i].userData;
+        if (this._intersects(positionCandidate, other)){
+          intersects = true
+          break
+        }
+      }
+      if (!intersects) {
+        const point = new Point (
+          positionCandidate.x,
+          positionCandidate.y,
+          positionCandidate
+        )
+        this.quadtree.insert(point)
+        positionsArr.push(positionCandidate)
       }
     }
     return positionsArr;
@@ -70,16 +104,25 @@ export default class NonOverlappingPositions extends CreativeTools {
     }
   }
 
-  _candidatePositionIsValid(positionCandidate, positionsArr) {
-    for (let j = 0; j < positionsArr.length; j++) {
-      const position = positionsArr[j];
-      const candidateDistance = this._candidateDistance(positionCandidate, position);
-      const minimumDistance = this._minimumDistance(positionCandidate, position);
-      if (candidateDistance < minimumDistance) {
-        return false
-      }
+  // _candidatePositionIsValid(positionCandidate, positionsArr) {
+  //   for (let j = 0; j < positionsArr.length; j++) {
+  //     const position = positionsArr[j];
+  //     const candidateDistance = this._candidateDistance(positionCandidate, position);
+  //     const minimumDistance = this._minimumDistance(positionCandidate, position);
+  //     if (candidateDistance < minimumDistance) {
+  //       return false
+  //     }
+  //   }
+  //   return true
+  // }
+
+  _intersects(positionCandidate, positionOther) {
+    const candidateDistance = this._candidateDistance(positionCandidate, positionOther);
+    const minimumDistance = this._minimumDistance(positionCandidate, positionOther);
+    if (candidateDistance < minimumDistance) {
+      return true
     }
-    return true
+    return false
   }
 
   _candidateDistance(positionCandidate, position){

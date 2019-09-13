@@ -4,7 +4,7 @@
 
 // QuadTree
 
-class Point {
+export class Point {
   constructor(x, y, data) {
     this.x = x;
     this.y = y;
@@ -12,7 +12,7 @@ class Point {
   }
 }
 
-class Rectangle {
+export class Rectangle {
   constructor(x, y, w, h) {
     this.x = x;
     this.y = y;
@@ -55,7 +55,7 @@ class Rectangle {
 }
 
 // circle class for a circle shaped query
-class Circle {
+export class Circle {
   constructor(x, y, r) {
     this.x = x;
     this.y = y;
@@ -97,7 +97,7 @@ class Circle {
   }
 }
 
-class QuadTree {
+export class QuadTree {
   constructor(boundary, capacity) {
     if (!boundary) {
       throw TypeError('boundary is null or undefined');
@@ -256,14 +256,22 @@ class QuadTree {
       this.southeast.insert(point) || this.southwest.insert(point));
   }
 
-  query(range, found) {
+  query(range, found, isSeamless=false) {
     if (!found) {
       found = [];
     }
 
-    if (!range.intersects(this.boundary)) {
-      return found;
+    if (isSeamless){
+      if (!range.intersects(this.boundary)) {
+        return found;
+      }
     }
+    // else {
+    //   if (!range.intersectsSeamless(this.boundary)) {
+    //     return found;
+    //   }
+    // }
+
 
     for (let p of this.points) {
       if (range.contains(p)) {

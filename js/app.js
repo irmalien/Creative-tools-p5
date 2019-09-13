@@ -94,12 +94,13 @@ function draw() {
   //*****************************************
   // Draw NonOverlappingPositions
     const nonOverlapping = new NonOverlappingPositions({
-      quantityOfPositions: 100,
-      minimumSize: 10,
-      maximumSize: 50,
-      minimumMargin: 0.1,
-      maximumMargin: 5,
+      quantityOfPositions: 10000,
+      minimumSize: 2,
+      maximumSize: 3,
+      minimumMargin: 4,
+      maximumMargin: 10,
     });
+
     nonOverlapping.positionsArray.forEach(sample => {
       const perlinCircle = new PerlinCircle({
         size: sample.r/2,
