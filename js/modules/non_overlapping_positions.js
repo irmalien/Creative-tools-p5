@@ -1,5 +1,5 @@
 import CreativeTools from "./creative_tools.js";
-import { Point, Rectangle, QuadTree, Circle } from "./quadtree.js"
+import { Point, Rectangle, QuadTree, Circle } from "./quadtree.js";
 
 export default class NonOverlappingPositions extends CreativeTools {
   constructor(_obj) {
@@ -14,29 +14,31 @@ export default class NonOverlappingPositions extends CreativeTools {
       minimumMargin: 0,
       maximumMargin: 50,
       isSeamless: false,
-      get maximumAttemptsBeforeExit() {
-        return this.quantityOfPositions * 10;
-      },
+      maximumAttemptsBeforeExit: 250, // 250 seems to be fast and optimal
+
       get randomWidthPosition() {
-        return random(this.areaWidth)
+        return random(this.areaWidth);
       },
       get randomHeightPosition() {
-        return random(this.areaHeight)
+        return random(this.areaHeight);
       },
       get randomSize() {
-        return this.minimumSize != 0 ? random(this.minimumSize, this.maximumSize) : this.maximumSize
-
+        return this.minimumSize != 0
+          ? random(this.minimumSize, this.maximumSize)
+          : this.maximumSize;
       },
       get randomMargin() {
-        return this.minimumMargin != 0 ? random(this.minimumMargin, this.maximumMargin) : this.maximumMargin
+        return this.minimumMargin != 0
+          ? random(this.minimumMargin, this.maximumMargin)
+          : this.maximumMargin;
+      },
+      get quadtreeRange() {
+        return (this.maximumSize + this.maximumMargin) * 2;
       }
     };
 
     this.setState(_obj);
-
-    this.boundary = new Rectangle(0, 0, this.state.areaWidth, this.state.areaHeight);
-    this.capacity = 4;
-    this.quadtree = new QuadTree(this.boundary, this.capacity);
+    this._initializeQuadTree();
   }
 
   get positionsArray() {
@@ -44,93 +46,119 @@ export default class NonOverlappingPositions extends CreativeTools {
   }
 
   _generateAndValidatePositions() {
-    const { quantityOfPositions, maximumAttemptsBeforeExit } = this.state;
-
+    const {
+      quantityOfPositions,
+      maximumAttemptsBeforeExit,
+      quadtreeRange
+    } = this.state;
     const positionsArr = [];
-    let positionsQuadArr = [];
     let failedAttempts = 0;
+
     while (
       positionsArr.length < quantityOfPositions &&
       failedAttempts < maximumAttemptsBeforeExit
     ) {
-      failedAttempts++;
-
-      if (positionsArr.length === 0) {
-        const positionCandidate = this._makeRandomPosition();
-        const point = new Point (
-          positionCandidate.x,
-          positionCandidate.y,
-          positionCandidate
-        )
-        this.quadtree.insert(point)
-        positionsArr.push(positionCandidate)
-      }
-
-      const positionCandidate = this._makeRandomPosition();
-      const range = new Circle (
-        positionCandidate.x,
-        positionCandidate.y,
-        (positionCandidate.r+positionCandidate.margin)*2,
-      )
-
-      let points = this.quadtree.query(range)
-      let intersects = false
-      for (let i =0; i<points.length; i++) {
-        let other = points[i].userData;
-        if (this._intersects(positionCandidate, other)){
-          intersects = true
-          break
-        }
-      }
-      if (!intersects) {
-        const point = new Point (
-          positionCandidate.x,
-          positionCandidate.y,
-          positionCandidate
-        )
-        this.quadtree.insert(point)
-        positionsArr.push(positionCandidate)
+      const positionCandidate = new PositionCandidate({
+        x: this.state.randomWidthPosition,
+        y: this.state.randomHeightPosition,
+        r: this.state.randomSize,
+        margin: this.state.randomMargin
+      });
+      // console.log(positionCandidate);
+      const isValidCandidate = this._validateAgainstOtherPositions(
+        positionCandidate
+      );
+      if (isValidCandidate) {
+        this._addPositionToQuadtree(positionCandidate.state);
+        positionsArr.push(positionCandidate.state);
+        failedAttempts = 0;
+      } else {
+        failedAttempts++;
       }
     }
     return positionsArr;
   }
 
-  _makeRandomPosition() {
-    return {
-      x: this.state.randomWidthPosition,
-      y: this.state.randomHeightPosition,
-      r: this.state.randomSize,
-      margin: this.state.randomMargin
-    }
+  _initializeQuadTree() {
+    this.boundary = new Rectangle(
+      0,
+      0,
+      this.state.areaWidth,
+      this.state.areaHeight
+    );
+    this.capacity = 8;
+    this.quadtree = new QuadTree(this.boundary, this.capacity);
   }
 
-  // _candidatePositionIsValid(positionCandidate, positionsArr) {
-  //   for (let j = 0; j < positionsArr.length; j++) {
-  //     const position = positionsArr[j];
-  //     const candidateDistance = this._candidateDistance(positionCandidate, position);
-  //     const minimumDistance = this._minimumDistance(positionCandidate, position);
-  //     if (candidateDistance < minimumDistance) {
-  //       return false
-  //     }
-  //   }
-  //   return true
-  // }
+  _validateAgainstOtherPositions(positionCandidate) {
+    const range = new Circle(
+      positionCandidate.x,
+      positionCandidate.y,
+      this.state.quadtreeRange
+    );
+    const positionsInRange = this.quadtree.query(range);
 
-  _intersects(positionCandidate, positionOther) {
-    const candidateDistance = this._candidateDistance(positionCandidate, positionOther);
-    const minimumDistance = this._minimumDistance(positionCandidate, positionOther);
+    for (let i = 0; i < positionsInRange.length; i++) {
+      let otherPosition = positionsInRange[i].userData;
+      if (positionCandidate.intersects(otherPosition)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  _addPositionToQuadtree(positionCandidate) {
+    const point = new Point(
+      positionCandidate.x,
+      positionCandidate.y,
+      positionCandidate
+    );
+    this.quadtree.insert(point);
+  }
+}
+
+class PositionCandidate {
+  constructor(_obj) {
+    this.state = {
+      x: _obj.x,
+      y: _obj.y,
+      r: _obj.r,
+      margin: _obj.margin
+    };
+  }
+
+  get x() {
+    return this.state.x;
+  }
+
+  get y() {
+    return this.state.y;
+  }
+
+  get r() {
+    return this.state.y;
+  }
+
+  get margin() {
+    return this.state.margin;
+  }
+
+  intersects(otherPosition) {
+    const candidateDistance = this._candidateDistance(otherPosition);
+    const minimumDistance = this._minimumDistance(otherPosition);
     if (candidateDistance < minimumDistance) {
-      return true
+      return true;
     }
-    return false
+    return false;
   }
 
-  _candidateDistance(positionCandidate, position){
-    return dist(positionCandidate.x, positionCandidate.y, position.x, position.y)
+  _candidateDistance(otherPosition) {
+    return dist(this.state.x, this.state.y, otherPosition.x, otherPosition.y);
   }
 
-  _minimumDistance(positionCandidate, position){
-    return positionCandidate.r + positionCandidate.margin + position.r + position.margin
+  _minimumDistance(otherPosition) {
+    return (
+      this.state.r + this.state.margin + otherPosition.r + otherPosition.margin
+    );
   }
-
 }

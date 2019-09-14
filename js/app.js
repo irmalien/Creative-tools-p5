@@ -96,9 +96,9 @@ function draw() {
     const nonOverlapping = new NonOverlappingPositions({
       quantityOfPositions: 10000,
       minimumSize: 2,
-      maximumSize: 2,
-      minimumMargin: 5,
-      maximumMargin: 5,
+      maximumSize: 15,
+      minimumMargin: 15,
+      maximumMargin: 15,
     });
 
     nonOverlapping.positionsArray.forEach(sample => {
@@ -110,8 +110,18 @@ function draw() {
       });
       perlinCircle.move();
       noStroke();
-      fill(0, 0, 100);
+      fill(200, 20, 50);
       perlinCircle.drawSeamless();
+      //
+    //   fill(0, 0, 100);
+    //   let xPos = sample.x + random(-2, 2)
+    //   let yPos = sample.y + random(-2, 2)
+    //   perlinCircle.setState({
+    //     size: sample.r/3,
+    //     position: { x: xPos, y: yPos }
+    //   })
+    //   perlinCircle.move();
+    //   perlinCircle.drawSeamless();
     });
   //*****************************************
 
