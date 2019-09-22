@@ -57,17 +57,32 @@ perlinCircle.draw();
 // perlinCircle.drawSeamless() method to draw circle on edge and continue on opposite side.
 ```
 
-## Sub-Random positions
-Splits area in cells and populates each cell with randomly distributed positions. Number of cells are determined by `collumns` and `rows` in object. As number of cells are increased, randomness non-uniformity effect gets reduced.
+## Random distribution
+Basic random distribution for comparison with other solutions.
 
 #### Example output and code below
-![Sub-random positions](./img/sub-random.png?raw=true)
+![Random distribution](./img/random.png?raw=true)
+
+```javascript
+const positionsArray = []
+for(let i=0; i<2000; i++){
+  positionsArray.push({x: random(width), y: random(height)})
+}
+```
+
+## Sub-random distribution
+Splits area in cells and populates each cell with randomly distributed positions. Number of cells are determined by `columns` and `rows` in object. As number of cells are increased, randomness non-uniformity effect gets reduced.
+
+#### Example output and code below
+![Sub-random distribution](./img/sub_random_distribution.png?raw=true)
 
 ```javascript
 const subRandom = new SubRandom({
-  columns: 50,
-  rows: 50,
-  quantityOfPositions: 100,
+  areaWidth: 2200,
+  areaHeight: 1308,
+  columns: 40,
+  rows: 30,
+  quantityOfPositionsInCell: 1,
 });
 subRandom.positionsArray; // export x and y positions in array
 ```
@@ -76,34 +91,54 @@ subRandom.positionsArray; // export x and y positions in array
 Generates grid of positions and by adjusting `displacementIntensity` creates appearance of random distribution. Value `0` creates grid with where each point is placed in middle of each cell, `100` adds displacement up to edge of the cell, values above `100` displaces points below their cell.
 
 #### Example output and code below
-![Displacement grid](./img/displacement_grid.png?raw=true)
+![Displaced grid](./img/displaced_grid.png?raw=true)
 
 ```javascript
 const displacedGrid = new DisplacedGrid({
-  areaWidth: width,
-  areaHeight: height,
-  columns: 22,
-  rows: 13,
-  displacementIntensity: 100
+  areaWidth: 2200,
+  areaHeight: 1308,
+  columns: 33,
+  rows: 20,
+  displacementIntensity: 130
 });
 displacedGrid.positionsArray; // export x and y positions in array
 ```
 
 ## Fast Poisson Disk Sample
-Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern. Advantage of this algorithm is it's fast speed. While disadvantage is that it works best with circles/forms that are similar size, and as size variation increases algorithm produces less than satisfactory results.
+Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern. This algorithm is fast and creates very uniform result, thought disadvantage is that it works best with circles/forms that are similar size, and as size variation increases algorithm produces less than satisfactory results.
 
 #### Example output and code below
 ![Fast Poisson Disk Sample](./img/fast-poisson-disk-sample.png?raw=true)
 
 ```javascript
-const fastPoissonDiscSampling = new FastPoissonDiskSampling({
-width: width,         // width of area
-height: height,       // height of area
-minimumDistance: 50,  // required minimum distance between the points
-numberOfSamples: 30,  // Number of new samples around one sample
+const poissonDisk = new FastPoissonDiskSample({
+  areaWidth: 2200,
+  areaHeight: 1308,
+  minimumDistance: 50,
+  numberOfSamples: 30
 })
-fastPoissonDiscSampling.drawGridArr(); // export x and y positions in array
+poissonDisk.positionsArray; // export x and y positions in array
 ```
+
+## Non-overlapping circles
+TODO: write description
+
+#### Example output and code below
+![NonOverlappingCircles](./img/non-overlapping.png?raw=true)
+
+```javascript
+const nonOverlapping = new NonOverlappingCircles({
+  areaWidth: 2200,
+  areaHeight: 1308,
+  quantityOfPositions: 1000,
+  minimumSize: 5,
+  maximumSize: 10,
+  minimumMargin: 10,
+  maximumMargin: 15,
+});
+nonOverlapping.positionsArray; // export x and y positions in array
+```
+
 
 ## Contributing
 1. Fork it!
@@ -113,7 +148,7 @@ fastPoissonDiscSampling.drawGridArr(); // export x and y positions in array
 5. Submit a pull request :D
 
 
-## Credits
+## Credits and further information
 [Fast Poisson Disk Sampling in Arbitrary Dimensions](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
 [Perlin noise wiki](https://en.wikipedia.org/wiki/Perlin_noise)
 

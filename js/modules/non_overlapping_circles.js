@@ -1,7 +1,7 @@
 import CreativeTools from "./creative_tools.js";
 import { Point, Rectangle, QuadTree, Circle } from "./quadtree.js";
 
-export default class NonOverlappingPositions extends CreativeTools {
+export default class NonOverlappingCircles extends CreativeTools {
   constructor(_obj) {
     super();
 

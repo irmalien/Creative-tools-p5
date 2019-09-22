@@ -1,9 +1,6 @@
 import CreativeTools from "./creative_tools.js";
 
-// Function splits area in seperated regions and fills with random points,
-// creating more uniform random distribution.
-
-export default class DisplacedGrid extends CreativeTools {
+export default class SubRandomDistribution extends CreativeTools {
   constructor(_obj) {
     super();
 
@@ -29,7 +26,6 @@ export default class DisplacedGrid extends CreativeTools {
     return this._populateCellsWithPositions();
   }
 
-  //Alternative B
   _makeCells(){
     const {
       rows,
