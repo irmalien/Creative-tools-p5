@@ -108,7 +108,7 @@ displacedGrid.positionsArray; // export x and y positions in array
 Fast poisson-disc sampling produces points that are tightly-packed, but no closer to each other than a specified minimum distance, resulting in a more natural pattern. This algorithm is fast and creates very uniform result, thought disadvantage is that it works best with circles/forms that are similar size, and as size variation increases algorithm produces less than satisfactory results.
 
 #### Example output and code below
-![Fast Poisson Disk Sample](./img/fast-poisson-disk-sample.png?raw=true)
+![Fast Poisson Disk Sample](./img/fast_poisson_disc_sample.png?raw=true)
 
 ```javascript
 const poissonDisk = new FastPoissonDiskSample({
