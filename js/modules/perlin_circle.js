@@ -7,9 +7,9 @@ export default class PerlinCircle  extends CreativeTools {
 
 	  this.state = {
 	    size: 100,
-	    roundness: 50,
-	    smoothnessA: 50,
-	    smoothnessB: 50,
+	    roundness: 100,
+	    smoothnessA: 80,
+	    smoothnessB: 80,
 	    position: {x:0, y:0},
 	    perlin: new Perlin({zInc: 0.002}),
 	    set perlinZOff(_int) {
