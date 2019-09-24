@@ -12,6 +12,15 @@ TODO: Describe the installation process
 All tools are made as classes with state and can be initialised as objects with individualised settings.
 Settings to objects can be passed upon initialisation or anytime after using objects .setState() function.
 
+#### Import relevant classes
+```javascript
+import PerlinCircle from "./modules/perlin_circle.js";
+import FastPoissonDiskSample from "./modules/fast_poisson_disc_sample.js";
+import DisplacedGrid from "./modules/displaced_grid.js";
+import SubRandomDistribution from "./modules/sub_random_distribution.js";
+import NonOverlappingCircles from "./modules/non_overlapping_circles.js"
+```
+
 #### Initialise object parameters with constructor
 ```javascript
 const perlinCircle = new PerlinCircle({
@@ -22,7 +31,7 @@ const perlinCircle = new PerlinCircle({
 })
 ```
 
-#### Initialise object parameters with setState() method
+#### Initialise or modify object parameters with setState() method
 ```javascript
 perlinCircle.setState({
   size: random(10,20),
