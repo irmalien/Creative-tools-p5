@@ -147,18 +147,12 @@ const nonOverlapping = new NonOverlappingCircles({
 nonOverlapping.positionsArray; // export x and y positions in array
 ```
 
-
 ## Contributing
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
-
-
-## Credits and further information
-[Fast Poisson Disk Sampling in Arbitrary Dimensions](https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf)
-[Perlin noise wiki](https://en.wikipedia.org/wiki/Perlin_noise)
 
 ## License
 MIT license
