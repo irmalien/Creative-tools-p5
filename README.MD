@@ -1,12 +1,11 @@
 # Creative tools for Javascript and P5js library
 Ongoing development of various creative tools made primarily for P5js and HTML canvas.
-* Perlin noise
 * Perlin circle
+* Random distribution
+* Sub-random distribution
+* Displaced grid
 * Fast Poisson Disc Sampling
-* Non-overlapping random circle distribution
-
-## Installation
-TODO: Describe the installation process
+* Non-overlapping circles
 
 ## Usage
 All tools are made as classes with state and can be initialised as objects with individualised settings.
@@ -130,7 +129,7 @@ poissonDisk.positionsArray; // export x and y positions in array
 ```
 
 ## Non-overlapping circles
-TODO: write description
+Produces randomly placed circle area that other circles are forbiden to overlap. Circles get randomly placed until maximum defined quantity is reached or no more area is left to place new circle(reaching maximum failed attempts). This algorithm with quadtree support is relatively fast and fully accounts for various circle sizes. Thought  with similar sizes will be less uniform that Fast Poisson Disk Sample.
 
 #### Example output and code below
 ![NonOverlappingCircles](./img/non-overlapping.png?raw=true)
@@ -162,7 +161,7 @@ nonOverlapping.positionsArray; // export x and y positions in array
 [Perlin noise wiki](https://en.wikipedia.org/wiki/Perlin_noise)
 
 ## License
-TODO: Write license
+MIT license
 
 ## Dependencies
 This app is using [P5.js library](https://github.com/processing/p5.js)
