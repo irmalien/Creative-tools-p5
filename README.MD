@@ -50,7 +50,7 @@ A circle like object modified by Perlin noise.
 
 #### Example output and code below
 ![Perlin Circle](./img/perlin_circle.png?raw=true)
-
+<!-- TODO: consistency, remove comments -->
 ```javascript
 const perlinCircle = new PerlinCircle({
   size: 500,          // size of circle
@@ -68,18 +68,11 @@ perlinCircle.draw();
 ## Random distribution
 Basic random distribution for comparison with other solutions.
 
-#### Example output and code below
+#### Example output with default javascript random algorithm
 ![Random distribution](./img/random.png?raw=true)
 
-```javascript
-const positionsArray = []
-for(let i=0; i<2000; i++){
-  positionsArray.push({x: random(width), y: random(height)})
-}
-```
-
 ## Sub-random distribution
-Splits area in cells and populates each cell with randomly distributed positions. Number of cells are determined by `columns` and `rows` in object. As number of cells are increased, randomness non-uniformity effect gets reduced.
+Splits area in cells and populates each cell with randomly distributed positions. Number of cells are determined by `columns` and `rows` in an object. As number of cells are increased, distribution uniformity increases.
 
 #### Example output and code below
 ![Sub-random distribution](./img/sub_random_distribution.png?raw=true)
@@ -92,11 +85,11 @@ const subRandom = new SubRandom({
   rows: 30,
   quantityOfPositionsInCell: 1,
 });
-subRandom.positionsArray; // export x and y positions in array
+subRandom.positionsArray; // [{ x: Number, y: Number }, ...]
 ```
 
 ## Displaced grid
-Generates grid of positions and by adjusting `displacementIntensity` creates appearance of random distribution. Value `0` creates grid with where each point is placed in middle of each cell, `100` adds displacement up to edge of the cell, values above `100` displaces points below their cell.
+Generates grid of positions and by adjusting `displacementIntensity` creates appearance of random distribution. Value `0` creates grid with where each point is placed in middle of each cell, `100` adds displacement up to edge of the cell, values above `100` displaces points outside of their cell.
 
 #### Example output and code below
 ![Displaced grid](./img/displaced_grid.png?raw=true)
@@ -109,7 +102,7 @@ const displacedGrid = new DisplacedGrid({
   rows: 20,
   displacementIntensity: 130
 });
-displacedGrid.positionsArray; // export x and y positions in array
+displacedGrid.positionsArray; // [{ x: Number, y: Number }, ...]
 ```
 
 ## Fast Poisson Disk Sample
@@ -125,11 +118,11 @@ const poissonDisk = new FastPoissonDiskSample({
   minimumDistance: 50,
   numberOfSamples: 30
 })
-poissonDisk.positionsArray; // export x and y positions in array
+poissonDisk.positionsArray; // [{ x: Number, y: Number }, ...]
 ```
 
 ## Non-overlapping circles
-Produces randomly placed circle area that other circles are forbiden to overlap. Circles get randomly placed until maximum defined quantity is reached or no more area is left to place new circle(reaching maximum failed attempts). This algorithm with quadtree support is relatively fast and fully accounts for various circle sizes. Thought  with similar sizes will be less uniform that Fast Poisson Disk Sample.
+Produces randomly placed circle area that other circles are forbiden to overlap. Circles get randomly placed until maximum defined quantity is reached or no more area is left to place new circle. The amount of attempts until considering it unplacable can be specified by passing the option called: `...`, default `200`. This algorithm with quadtree support is relatively fast and fully accounts for various circle sizes. Thought  with similar sizes will be less uniform that Fast Poisson Disk Sample.
 
 #### Example output and code below
 ![NonOverlappingCircles](./img/non-overlapping.png?raw=true)
@@ -144,7 +137,7 @@ const nonOverlapping = new NonOverlappingCircles({
   minimumMargin: 10,
   maximumMargin: 15,
 });
-nonOverlapping.positionsArray; // export x and y positions in array
+nonOverlapping.positionsArray; // [{ x: Number, y: Number, r: Number, margin: Number }, ...]
 ```
 
 ## Contributing
